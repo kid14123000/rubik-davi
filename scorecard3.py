@@ -65,8 +65,6 @@ def beam_one(net, dev, state, width=64, max_steps=40, mode="policy", want_path=F
             paths = [paths[i % W] + [i // W] for i in keep]
         P = tuple(x[keep] for x in cp)
         G, C, L = cg[keep], cc[keep], lg[keep]
-        if want_path:
-            paths = [paths[i % W] + [i // W] for i in keep]
     if return_frontier:
         return max_steps, False, (paths[0] if want_path else None), (P, paths)
     return max_steps, False, (paths[0] if want_path else None)
