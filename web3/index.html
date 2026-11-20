@@ -90,7 +90,7 @@
           <option value="8">8 步</option>
           <option value="12" selected>12 步</option>
           <option value="16">16 步</option>
-          <option value="20">20 步（超纲）</option>
+          <option value="20">20 步（挑战）</option>
         </select>
         <button id="btnAuto">网络自动还原</button>
         <button id="btnUndo">撤销一步</button>
@@ -121,7 +121,8 @@
           2. 自己按下面的 U/U'/R/R'… 一步步拧，看右侧网络建议。<br>
           3. 卡住了就点「网络自动还原」，它会用 beam 搜索给你一条完整解。<br>
           <span style="color:var(--dim)">注：策略头学的是“撤销上一步”，它只给概率，不保证最优；
-          value 头给“还差几步”的估计，两者都不完美——这正是这类方法的真实状态。</span>
+          value 头给“还差几步”的估计，两者都不完美——这正是这类方法的真实状态。
+          当前权重（300k 迭代）实测：≤12 步基本全解，16 步 ~75%，20 步 30–45%。</span>
         </div>
       </div>
     </div>
@@ -393,7 +394,7 @@ async function pollStatus(){
       document.getElementById('lastHint').textContent =
         r.solved
           ? `网络解：${r.moves.length} 步（beam 128，${r.sec}s）—— 已逐帧验证可还原`
-          : `网络未能解出（beam 128 搜了 ${r.sec}s）：这个打乱超出当前权重能力，可换 8/12 步再试`;
+          : `网络未能解出（beam 128 搜了 ${r.sec}s）：这个打乱超出当前权重能力（12 步内基本全解，16 步左右开始掉），可换 8/12 步再试`;
       await animateSeq(r.moves, 190);
     } finally { btn.disabled=false; btn.textContent='网络自动还原'; }
   };
