@@ -1,0 +1,5 @@
+torch>=2.0
+numpy>=1.24
+
+# optional: only for the cross-validation scripts (check3.py, check3e.py, derive_view.py)
+# pycuber>=0.2.2

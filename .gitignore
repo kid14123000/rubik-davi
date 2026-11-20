@@ -1,0 +1,25 @@
+# ---- training artefacts (never commit weights, data or logs) ----
+runs/
+runs3/
+*.pt
+*.pth
+*.npz
+*.log
+metrics.jsonl
+status.json.tmp
+
+# ---- python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# ---- os / editor ----
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# ---- scratch ----
+*.tmp
