@@ -68,6 +68,8 @@ def main():
     ap.add_argument("--device", default="auto")
     ap.add_argument("--out", default=None)
     ap.add_argument("--resume", default=None)
+    ap.add_argument("--iter-offset", type=int, default=0,
+                    help="display/checkpoint label offset when continuing a run")
     args = ap.parse_args()
 
     run = args.out or time.strftime("runs3/%Y%m%d-%H%M%S")
@@ -100,7 +102,7 @@ def main():
         st = dict(run=os.path.basename(run), started=t0, iters=tr.iter,
                   total_iters=args.iters, samples=tr.samples,
                   elapsed=time.time() - t0, device=dev, params=n_params,
-                  kmax_now=tr.current_kmax(),
+                  kmax_now=tr.current_kmax(), iter_label=args.iter_offset + tr.iter,
                   cfg={k: cfg[k] for k in ("batch", "kmax", "kmax_start", "hidden",
                                            "lr", "gamma", "beam_mode", "beam_width")},
                   loss_v=hist[-1][1] if hist else None,
@@ -140,7 +142,8 @@ def main():
                       eval_s=round(time.time() - te, 1), kmax=r["kmax"])
             evals.append(ev)
             tr.save(os.path.join(run, "model.pt"),
-                    meta=dict(it=tr.iter, hidden=args.hidden, device=dev))
+                    meta=dict(it=args.iter_offset + tr.iter, hidden=args.hidden,
+                              device=dev))
             publish()
             print("EVAL " + json.dumps({k: (round(v, 4) if isinstance(v, float) else v)
                                         for k, v in ev.items()}), flush=True)

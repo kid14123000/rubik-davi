@@ -21,7 +21,9 @@ import scorecard3 as SC
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RUN = os.path.join(HERE, "runs3", "main")
-DEV = "cpu"
+# search device: keep it off MPS while a training run is using the GPU;
+# switch with DEVICE=mps once training is done.
+DEV = os.environ.get("DEVICE") or ("mps" if torch.backends.mps.is_available() else "cpu")
 _LOCK = threading.Lock()
 _CACHE = {"mtime": None, "net": None, "it": None}
 
@@ -36,6 +38,17 @@ MOVE_GEOM = {
 }
 
 
+def _offset():
+    p = os.path.join(RUN, "offset.json")
+    if os.path.exists(p):
+        try:
+            with open(p) as f:
+                return int(json.load(f).get("offset", 0))
+        except Exception:                                        # noqa: BLE001
+            return 0
+    return 0
+
+
 def load_net():
     path = os.path.join(RUN, "model.pt")
     with _LOCK:
@@ -48,7 +61,7 @@ def load_net():
             net = M.DualNet3(meta.get("hidden", 512)).to(DEV)
             net.load_state_dict(ck["state"])
             net.eval()
-            _CACHE.update(mtime=mt, net=net, it=meta.get("it"))
+            _CACHE.update(mtime=mt, net=net, it=_offset() + int(meta.get("it") or 0))
         return _CACHE["net"]
 
 

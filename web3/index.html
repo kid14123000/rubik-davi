@@ -93,6 +93,12 @@
           <option value="20">20 步（挑战）</option>
         </select>
         <button id="btnAuto">网络自动还原</button>
+        <select id="kBeam" style="background:#1b232d;color:var(--fg);border:1px solid var(--line);
+                border-radius:8px;padding:7px 6px;font-size:12.5px">
+          <option value="128">beam 128（快）</option>
+          <option value="512">beam 512</option>
+          <option value="1024" selected>beam 1024</option>
+        </select>
         <button id="btnUndo">撤销一步</button>
         <button id="btnReset">复位</button>
         <span class="mut" id="progress">已走 0 步</span>
@@ -248,7 +254,7 @@ const S = {
   async meta(){ return (await fetch('/api3/meta')).json(); },
   async move(state, m){ return (await fetch(`/api3/move?state=${state}&m=${encodeURIComponent(m)}`)).json(); },
   async scramble(k){ return (await fetch(`/api3/scramble?k=${k}`)).json(); },
-  async solve(state){ return (await fetch(`/api3/solve?state=${state}&width=128`)).json(); },
+  async solve(state, width=128){ return (await fetch(`/api3/solve?state=${state}&width=${width}`)).json(); },
   async status(){ return (await fetch('/api3/status')).json(); },
 };
 
@@ -390,10 +396,11 @@ async function pollStatus(){
     const btn = document.getElementById('btnAuto');
     btn.disabled = true; btn.textContent = '搜索中…';
     try{
-      const r = await S.solve(state);
+      const bw = document.getElementById('kBeam').value;
+      const r = await S.solve(state, parseInt(bw));
       document.getElementById('lastHint').textContent =
         r.solved
-          ? `网络解：${r.moves.length} 步（beam 128，${r.sec}s）—— 已逐帧验证可还原`
+          ? `网络解：${r.moves.length} 步（beam ${bw}，${r.sec}s）—— 已逐帧验证可还原`
           : `网络未能解出（beam 128 搜了 ${r.sec}s）：这个打乱超出当前权重能力（12 步内基本全解，16 步左右开始掉），可换 8/12 步再试`;
       await animateSeq(r.moves, 190);
     } finally { btn.disabled=false; btn.textContent='网络自动还原'; }

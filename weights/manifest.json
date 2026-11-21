@@ -1,0 +1,80 @@
+{
+  "rubik3x3_417k.pt": {
+    "file": "rubik3x3_417k.pt",
+    "cube": 3,
+    "sha256": "6115f70dbd355ddeef6123208ec413454576b5565a1b87ee8c4c5862a1faa978",
+    "bytes": 2645147,
+    "params": 660237,
+    "hidden": 512,
+    "input": 256,
+    "actions": 12,
+    "trained_iters": 417000,
+    "lineage": "300k from scratch (curriculum 4->20) + 117k continuation at lr 1e-4",
+    "measured": {
+      "weight": "rubik3x3_417k.pt",
+      "it": 417000,
+      "seed": 31415,
+      "n_per_band": 20,
+      "rows": [
+        {
+          "k": 8,
+          "n": 20,
+          "w128": 1.0,
+          "w512": 1.0,
+          "w1024": 1.0,
+          "len1024": 7.9
+        },
+        {
+          "k": 12,
+          "n": 20,
+          "w128": 0.8,
+          "w512": 1.0,
+          "w1024": 1.0,
+          "len1024": 11.5
+        },
+        {
+          "k": 16,
+          "n": 20,
+          "w128": 0.45,
+          "w512": 1.0,
+          "w1024": 1.0,
+          "len1024": 24.2
+        },
+        {
+          "k": 20,
+          "n": 20,
+          "w128": 0.4,
+          "w512": 0.8,
+          "w1024": 0.85,
+          "len1024": 25.88235294117647
+        }
+      ]
+    }
+  },
+  "rubik2x2_20k.pt": {
+    "file": "rubik2x2_20k.pt",
+    "cube": 2,
+    "sha256": "1809fa18823bca8f301e428043b9efe740431f3af0678148c231570210233b28",
+    "bytes": 2294939,
+    "params": 572679,
+    "hidden": 512,
+    "input": 88,
+    "actions": 6,
+    "trained_iters": 20000,
+    "lineage": "20k from scratch, curriculum 3->14, 41M samples, 6m52s on M4 MPS",
+    "measured": {
+      "it": 20000,
+      "n": 300,
+      "v_mae": 1.7606011486053468,
+      "v_corr": 0.13468385038737565,
+      "opt_len": 10.626666666666667,
+      "greedy_solved": 0.14666666666666667,
+      "greedy_len": 11.590909090909092,
+      "beam192_solved": 0.9966666666666667,
+      "beam192_len": 10.979933110367893,
+      "beam192_optimal": 0.8260869565217391,
+      "beamvalue64_solved": 0.8466666666666667,
+      "beamvalue64_optimal": 0.9645669291338582
+    }
+  }
+}
