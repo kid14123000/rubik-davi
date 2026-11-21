@@ -24,6 +24,8 @@ def main():
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--max-steps", type=int, default=45)
     ap.add_argument("--device", default="cpu")
+    ap.add_argument("--weights", default=None,
+                    help="path to a checkpoint; default is the shipped latest")
     a = ap.parse_args()
     dev = a.device
     seed = a.seed if a.seed is not None else int(time.time() * 1000) % 100000
@@ -32,8 +34,8 @@ def main():
         import cube3 as k
         import model3 as M
         import scorecard3 as SC
-        ck = torch.load(os.path.join(HERE, "weights/rubik3x3_417k.pt"),
-                        map_location=dev, weights_only=False)
+        wpath = a.weights or os.path.join(HERE, "weights/rubik3x3_500k.pt")
+        ck = torch.load(wpath, map_location=dev, weights_only=False)
         net = M.DualNet3(ck["meta"]["hidden"]).to(dev)
         net.load_state_dict(ck["state"])
         net.eval()
@@ -53,8 +55,8 @@ def main():
         import cube2 as k
         import model as M
         import scorecard as SC
-        ck = torch.load(os.path.join(HERE, "weights/rubik2x2_20k.pt"),
-                        map_location=dev, weights_only=False)
+        wpath = a.weights or os.path.join(HERE, "weights/rubik2x2_20k.pt")
+        ck = torch.load(wpath, map_location=dev, weights_only=False)
         net = M.DualNet(ck["meta"]["hidden"]).to(dev)
         net.load_state_dict(ck["state"])
         net.eval()

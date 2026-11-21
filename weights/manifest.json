@@ -49,7 +49,8 @@
           "len1024": 25.88235294117647
         }
       ]
-    }
+    },
+    "note": "previous. Statistically equal to the 500k weight, marginally higher on the paired hard cell."
   },
   "rubik2x2_20k.pt": {
     "file": "rubik2x2_20k.pt",
@@ -75,6 +76,92 @@
       "beam192_optimal": 0.8260869565217391,
       "beamvalue64_solved": 0.8466666666666667,
       "beamvalue64_optimal": 0.9645669291338582
+    }
+  },
+  "rubik3x3_500k.pt": {
+    "file": "rubik3x3_500k.pt",
+    "cube": 3,
+    "sha256": "e88e73d08d9859410ef4a3563ecfd630c42a88e81c61eda37efb08034ebf36d2",
+    "bytes": 2645147,
+    "params": 660237,
+    "hidden": 512,
+    "input": 256,
+    "actions": 12,
+    "trained_iters": 500000,
+    "lineage": "300k from scratch (curriculum 4->20) + 200k continuation at lr 1e-4 / depth fixed 20 (interrupted at 108k, resumed from checkpoint)",
+    "note": "latest. Paired test vs rubik3x3_417k.pt on 60 identical 20-move scrambles found NO improvement (w1024: 92% vs 97%, flips 2 vs 5, McNemar p~0.45).",
+    "measured": {
+      "weight": "rubik3x3_500k.pt",
+      "it": 500000,
+      "seed": 31415,
+      "n_per_band": 20,
+      "p_acc": 0.56005859375,
+      "rows": [
+        {
+          "k": 8,
+          "n": 20,
+          "w128": 1.0,
+          "w512": 1.0,
+          "w1024": 1.0,
+          "len1024": 7.9
+        },
+        {
+          "k": 12,
+          "n": 20,
+          "w128": 0.9,
+          "w512": 1.0,
+          "w1024": 1.0,
+          "len1024": 11.5
+        },
+        {
+          "k": 16,
+          "n": 20,
+          "w128": 0.6,
+          "w512": 0.95,
+          "w1024": 1.0,
+          "len1024": 24.0
+        },
+        {
+          "k": 20,
+          "n": 20,
+          "w128": 0.3,
+          "w512": 0.8,
+          "w1024": 0.9,
+          "len1024": 25.333333333333332
+        }
+      ]
+    },
+    "paired_vs_417k": {
+      "n": 60,
+      "depth": 20,
+      "itA": 417000,
+      "itB": 500000,
+      "result": {
+        "128": {
+          "A": 0.2833333333333333,
+          "B": 0.25,
+          "both": 9,
+          "only_417k": 8,
+          "only_500k": 6,
+          "none": 37
+        },
+        "512": {
+          "A": 0.8166666666666667,
+          "B": 0.75,
+          "both": 41,
+          "only_417k": 8,
+          "only_500k": 4,
+          "none": 7
+        },
+        "1024": {
+          "A": 0.9666666666666667,
+          "B": 0.9166666666666666,
+          "both": 53,
+          "only_417k": 5,
+          "only_500k": 2,
+          "none": 0
+        }
+      }
     }
   }
 }
